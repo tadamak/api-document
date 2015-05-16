@@ -4,7 +4,7 @@ plumber = require 'gulp-plumber'
 notify = require 'gulp-notify'
 watch = require 'gulp-watch'
 webserver = require 'gulp-webserver'
-mockserver = require 'api-mock'
+mockserver = require 'drakov'
 minimist = require 'minimist'
 
 paths =
@@ -38,22 +38,23 @@ gulp.task 'doc:server', ['doc:build'], ->
       open: true
 
 mockKnownOptions =
-  string: ['file', 'port'],
+  string: ['file', 'port', 'delay', 'key', 'cert'],
+  boolean: ['stealthmode', 'disableCORS',],
   alias:
-    f: 'file',
-    p: 'port'
+    sourceFiles: 'file',
+    serverPort: 'port',
+    sslKeyFile: 'key',
+    sslCrtFile: 'cert'
   default:
-    port: 3001
+    file: paths.src,
+    port: 3001,
+    delay: 200,
+    stealthmode: false,
+    disableCORS: false,
 
-# $ gulp api:mock --file <apiblueprint>
+# $ gulp api:mock --file <apiblueprint glob>
 gulp.task 'api:mock', ->
   options = minimist process.argv.slice(2), mockKnownOptions
-  new mockserver
-    blueprintPath: "doc/#{options.file}",
-    options:
-      color: options.color,
-      port: options.port
-  .run()
-  console.log "Mockserver started at http://localhost:#{options.port}"
+  mockserver.run options
 
 gulp.task 'default', ['doc:watch', 'doc:server']

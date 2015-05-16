@@ -10,8 +10,8 @@
   "author": "tadamk",
   "dependencies": {
     "aglio": "^1.18.0",
-    "api-mock": "^0.2.2",
     "coffee-script": "^1.9.2",
+    "drakov": "^0.1.6",
     "gulp": "^3.8.11",
     "gulp-aglio": "0.0.7",
     "gulp-notify": "^2.2.0",
